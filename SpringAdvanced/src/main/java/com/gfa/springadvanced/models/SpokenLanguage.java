@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "spokenlanguages")
 public class SpokenLanguage {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private String englishName;
@@ -24,8 +24,6 @@ public class SpokenLanguage {
         this.iso6391 = iso6391;
         this.name = name;
     }
-
-
 
     public Long getId() {
         return id;

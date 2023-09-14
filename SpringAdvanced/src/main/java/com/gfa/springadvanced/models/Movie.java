@@ -1,5 +1,6 @@
 package com.gfa.springadvanced.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ public class Movie {
     private Integer budget;
 
     @OneToMany(mappedBy = "movieGenre")
+    @JsonIgnore
     private List<Genre> movieGenre;
 
     private String homepage;
@@ -31,9 +33,11 @@ public class Movie {
     private String posterPath;
 
     @OneToMany(mappedBy = "movieCompany")
+    @JsonIgnore
     private List<ProductionCompany> productionCompanies;
 
     @OneToMany(mappedBy = "movieCountry")
+    @JsonIgnore
     private List<ProductionCountry> productionCountries;
 
     private Date releaseDate;
@@ -41,6 +45,7 @@ public class Movie {
     private Integer runtime;
 
     @OneToMany(mappedBy = "movieLanguage")
+    @JsonIgnore
     private List<SpokenLanguage> spokenLanguages;
 
     private String status;
@@ -49,7 +54,6 @@ public class Movie {
     private Boolean video;
     private Double voteAverage;
     private Integer voteCount;
-
 
     public Movie() {
     }
@@ -288,35 +292,4 @@ public class Movie {
     public void setVoteCount(Integer voteCount) {
         this.voteCount = voteCount;
     }
-
-    /*
-            "genres": [],
-        "homepage": "",
-            "id": 1177202,
-            "imdb_id": "tt0111457",
-            "original_language": "mn",
-            "original_title": "Toorog",
-            "overview": "Musical romance in the Mongolian steppe.",
-            "popularity": 0.0,
-            "poster_path": null,
-            "production_companies": [],
-        "production_countries": [],
-        "release_date": "1994-04-01",
-            "revenue": 0,
-            "runtime": 95,
-            "spoken_languages": [
-        {
-            "english_name": "Mongolian",
-                "iso_639_1": "mn",
-                "name": ""
-        }
-],
-        "status": "Released",
-            "tagline": "",
-            "title": "Destiny",
-            "video": false,
-            "vote_average": 0.0,
-            "vote_count": 0
-    }
-*/
 }

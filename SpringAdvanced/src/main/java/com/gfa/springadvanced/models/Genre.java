@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table (name = "genres")
+@Table(name = "genres")
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,5 +44,10 @@ public class Genre {
 
     public void setMovieGenre(Movie movieGenre) {
         this.movieGenre = movieGenre;
+    }
+
+    @Override
+    public String toString() {
+        return getGenre();
     }
 }

@@ -2,44 +2,47 @@ package com.gfa.springadvanced.utils;
 
 import com.gfa.springadvanced.models.*;
 import com.gfa.springadvanced.models.dtos.MovieDTO;
+import com.gfa.springadvanced.models.dtos.MovieForUserDTO;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Component
 public class Converters {
 
-    @Autowired
-    private ModelMapper modelMapper;
-    private MovieDTO convertToDto(Movie movie, Genre genre, ProductionCompany productionCompany, ProductionCountry productionCountry, SpokenLanguage spokenLanguage) {
-        return modelMapper.map(movie, MovieDTO.class);
+    private final MovieServiceListUtils movieServiceListUtils;
+    private final ModelMapper modelMapper;
+
+    public Converters(MovieServiceListUtils movieServiceListUtils, ModelMapper modelMapper) {
+        this.movieServiceListUtils = movieServiceListUtils;
+        this.modelMapper = modelMapper;
     }
 
     public Movie convertToMovieEntity(MovieDTO movieDTO) {
-        /*
-        TypeMap<MovieDTO, Movie> propertyMapper = modelMapper.createTypeMap(MovieDTO.class, Movie.class);
-        propertyMapper.addMappings(mapper -> mapper.skip(Movie::setId));
-        modelMapper.map(movieDTO.getMovieId(), Movie.class).setMovieId(movieDTO.getMovieId());
-        modelMapper.map(movieDTO.getImdbId(), Movie.class).setImdbId(movieDTO.getImdbId());*/
         return modelMapper.map(movieDTO, Movie.class);
-
     }
 
-    private Genre convertToGenreEntity(MovieDTO movieDTO) {
-        return modelMapper.map(movieDTO, Genre.class);
-    }
+    public List<MovieForUserDTO> convertMoviesToMoviesForUserDTO(List<Movie> movies) {
+        List<MovieForUserDTO> userMovies = new ArrayList<>();
 
-    private ProductionCompany convertToCompanyEntity(MovieDTO movieDTO) {
-        return modelMapper.map(movieDTO, ProductionCompany.class);
-    }
+        for (Movie movie : movies) {
+            MovieForUserDTO userMovie = modelMapper.map(movie, MovieForUserDTO.class);
 
-    private ProductionCountry convertToCountryEntity(MovieDTO movieDTO) {
-        return modelMapper.map(movieDTO, ProductionCountry.class);
-    }
+            userMovie.setGenres(movie.getMovieGenre().stream().map(Genre::getGenre).toList());
 
-    private SpokenLanguage convertToLanguageEntity(MovieDTO movieDTO) {
-        return modelMapper.map(movieDTO, SpokenLanguage.class);
+            userMovie.setProductionCompanies(movie.getProductionCompanies().stream()
+                    .map(ProductionCompany::getProductionCompany).toList());
+
+            userMovie.setProductionCompanies(movie.getProductionCountries().stream()
+                    .map(ProductionCountry::getProductionCountry).toList());
+
+            userMovie.setSpokenLanguages(movie.getSpokenLanguages());
+            userMovies.add(userMovie);
+        }
+        return userMovies;
     }
 }

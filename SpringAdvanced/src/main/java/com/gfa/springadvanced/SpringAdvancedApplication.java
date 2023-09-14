@@ -1,25 +1,20 @@
 package com.gfa.springadvanced;
 
-import com.gfa.springadvanced.models.SpokenLanguage;
-import com.gfa.springadvanced.models.dtos.MovieDTO;
+import com.gfa.springadvanced.models.Genre;
+import com.gfa.springadvanced.repositories.GenreRepository;
 import com.gfa.springadvanced.services.MovieService;
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 @SpringBootApplication
 public class SpringAdvancedApplication implements CommandLineRunner {
 
-
     private final MovieService movieService;
 
-    public SpringAdvancedApplication(MovieService movieService) {
+    public SpringAdvancedApplication(GenreRepository genreRepository, MovieService movieService) {
         this.movieService = movieService;
     }
 

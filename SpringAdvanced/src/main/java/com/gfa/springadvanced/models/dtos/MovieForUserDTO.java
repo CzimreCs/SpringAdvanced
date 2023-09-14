@@ -5,14 +5,12 @@ import com.gfa.springadvanced.models.SpokenLanguage;
 import java.util.Date;
 import java.util.List;
 
-public class MovieDTO {
+public class MovieForUserDTO {
+
     private Boolean adult;
-    private String backdropPath;
     private Integer budget;
-    private Boolean belongsToCollection;
     private List<String> genres;
     private String homepage;
-    private Long movieId;
     private String imdbId;
     private String originalLanguage;
     private String originalTitle;
@@ -32,62 +30,15 @@ public class MovieDTO {
     private Double voteAverage;
     private Integer voteCount;
 
-    public MovieDTO() {
-    }
-
-    public MovieDTO(Boolean adult, String backdropPath, Integer budget, Boolean belongsToCollection, List<String> genres, String homepage, Long movieId,
-                    String imdbId, String originalLanguage, String originalTitle, String overView, Double popularity, String posterPath,
-                    List<String> productionCompanies, List<String> productionCountries, Date releaseDate, Integer revenue, Integer runtime,
-                    List<SpokenLanguage> spokenLanguages, String status, String tagline, String title, Boolean video, Double voteAverage, Integer voteCount) {
-        this.adult = adult;
-        this.backdropPath = backdropPath;
-        this.budget = budget;
-        this.belongsToCollection = belongsToCollection;
-        this.genres = genres;
-        this.homepage = homepage;
-        this.movieId = movieId;
-        this.imdbId = imdbId;
-        this.originalLanguage = originalLanguage;
-        this.originalTitle = originalTitle;
-        this.overView = overView;
-        this.popularity = popularity;
-        this.posterPath = posterPath;
-        this.productionCompanies = productionCompanies;
-        this.productionCountries = productionCountries;
-        this.releaseDate = releaseDate;
-        this.revenue = revenue;
-        this.runtime = runtime;
-        this.spokenLanguages = spokenLanguages;
-        this.status = status;
-        this.tagline = tagline;
-        this.title = title;
-        this.video = video;
-        this.voteAverage = voteAverage;
-        this.voteCount = voteCount;
+    public MovieForUserDTO() {
     }
 
     public Boolean getAdult() {
         return adult;
     }
 
-    public Boolean getBelongsToCollection() {
-        return belongsToCollection;
-    }
-
-    public void setBelongsToCollection(Boolean belongsToCollection) {
-        this.belongsToCollection = belongsToCollection;
-    }
-
     public void setAdult(Boolean adult) {
         this.adult = adult;
-    }
-
-    public String getBackdropPath() {
-        return backdropPath;
-    }
-
-    public void setBackdropPath(String backdropPath) {
-        this.backdropPath = backdropPath;
     }
 
     public Integer getBudget() {
@@ -112,14 +63,6 @@ public class MovieDTO {
 
     public void setHomepage(String homepage) {
         this.homepage = homepage;
-    }
-
-    public Long getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(Long movieId) {
-        this.movieId = movieId;
     }
 
     public String getImdbId() {
@@ -166,8 +109,8 @@ public class MovieDTO {
         return posterPath;
     }
 
-    public void setPosterPath(String posterPass) {
-        this.posterPath = posterPass;
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
     }
 
     public List<String> getProductionCompanies() {

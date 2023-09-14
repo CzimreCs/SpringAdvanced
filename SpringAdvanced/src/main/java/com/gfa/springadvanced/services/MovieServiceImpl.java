@@ -2,8 +2,10 @@ package com.gfa.springadvanced.services;
 
 import com.gfa.springadvanced.models.*;
 import com.gfa.springadvanced.models.dtos.MovieDTO;
+import com.gfa.springadvanced.models.dtos.MovieForUserDTO;
 import com.gfa.springadvanced.repositories.*;
 import com.gfa.springadvanced.utils.Converters;
+import com.gfa.springadvanced.utils.MovieBuilder;
 import com.gfa.springadvanced.utils.MovieServiceListUtils;
 import com.gfa.springadvanced.utils.RetrofitUtil;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,14 +25,14 @@ public class MovieServiceImpl implements MovieService {
     private final ProductionCountryRepository productionCountryRepository;
     private final SpokenLanguageRepository spokenLanguageRepository;
     private final MovieServiceListUtils movieServiceListUtils;
-    private Retrofit retrofit;
-    private MovieApi movieApi;
-    private Converters converters;
-
+    private final Retrofit retrofit;
+    private final MovieApi movieApi;
+    private final Converters converters;
+    private final MovieBuilder movieBuilder;
 
     public MovieServiceImpl(GenreRepository genreRepository, MovieRepository movieRepository, ProductionCompanyRepository productionCompanyRepository,
                             ProductionCountryRepository productionCountryRepository, SpokenLanguageRepository spokenLanguageRepository,
-                            MovieServiceListUtils movieServiceListUtils, Converters converters) {
+                            MovieServiceListUtils movieServiceListUtils, Converters converters, MovieBuilder movieBuilder) {
         this.genreRepository = genreRepository;
         this.movieRepository = movieRepository;
         this.productionCompanyRepository = productionCompanyRepository;
@@ -39,6 +42,7 @@ public class MovieServiceImpl implements MovieService {
         this.retrofit = RetrofitUtil.getRetrofitInstance();
         this.movieApi = retrofit.create(MovieApi.class);
         this.converters = converters;
+        this.movieBuilder = movieBuilder;
     }
 
     @Override
@@ -46,13 +50,13 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = converters.convertToMovieEntity(movieDTO);
         movieRepository.save(movie);
         List<Genre> genres = movieServiceListUtils.genreMaker(movieDTO.getGenres());
-        setGenresToMovie(movie, genres);
+        movieBuilder.setGenresToMovie(movie, genres);
         List<ProductionCompany> productionCompanies = movieServiceListUtils.companyMaker(movieDTO.getProductionCompanies());
-        setProductionCompaniesToMovie(movie, productionCompanies);
+        movieBuilder.setProductionCompaniesToMovie(movie, productionCompanies);
         List<ProductionCountry> productionCountries = movieServiceListUtils.countryMaker(movieDTO.getProductionCountries());
-        setProductionCountriesToMovie(movie, productionCountries);
+        movieBuilder.setProductionCountriesToMovie(movie, productionCountries);
         List<SpokenLanguage> spokenLanguages = movieDTO.getSpokenLanguages();
-        setSpokenLanguageToMovie(movie, spokenLanguages);
+        movieBuilder.setSpokenLanguageToMovie(movie, spokenLanguages);
         movieRepository.save(movie);
     }
 
@@ -72,57 +76,20 @@ public class MovieServiceImpl implements MovieService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        saveMovie(latestMovie);
+        Boolean isMovieInDB;
+        isMovieInDB = movieRepository.existsByMovieId(latestMovie.getMovieId());
+
+        if (!isMovieInDB) {
+            saveMovie(latestMovie);
+        }
         return latestMovie;
-
     }
 
-    private void setSpokenLanguageToMovie(Movie movie, List<SpokenLanguage> spokenLanguages) {
-        if (spokenLanguages != null) {
-            if (!spokenLanguages.isEmpty()) {
-                for (SpokenLanguage tmp : spokenLanguages) {
-                    tmp.setMovieLanguage(movie);
-                    movieRepository.save(movie);
-                    spokenLanguageRepository.save(tmp);
-                }
-            }
-        }
-    }
+    @Override
+    public List<MovieForUserDTO> getAllMovies() {
+        List<Movie> movies = movieRepository.findAll();
+        List<MovieForUserDTO> moviesForUserDTO = converters.convertMoviesToMoviesForUserDTO(movies);
 
-
-    private void setProductionCountriesToMovie(Movie movie, List<ProductionCountry> productionCountries) {
-        if (productionCountries != null) {
-            if (!productionCountries.isEmpty()) {
-                for (ProductionCountry productionCountry : productionCountries) {
-                    productionCountry.setMovieCountry(movie);
-                    movieRepository.save(movie);
-                    productionCountryRepository.save(productionCountry);
-                }
-            }
-        }
-    }
-
-    private void setProductionCompaniesToMovie(Movie movie, List<ProductionCompany> productionCompanies) {
-        if (productionCompanies != null) {
-            if (!productionCompanies.isEmpty()) {
-                for (ProductionCompany productionCompany : productionCompanies) {
-                    productionCompany.setMovieCompany(movie);
-                    movieRepository.save(movie);
-                    productionCompanyRepository.save(productionCompany);
-                }
-            }
-        }
-    }
-
-    private void setGenresToMovie(Movie movie, List<Genre> genres) {
-        if (genres != null) {
-            if (!genres.isEmpty()) {
-                for (Genre genre : genres) {
-                    genre.setMovieGenre(movie);
-                    movieRepository.save(movie);
-                    genreRepository.save(genre);
-                }
-            }
-        }
+        return moviesForUserDTO;
     }
 }
