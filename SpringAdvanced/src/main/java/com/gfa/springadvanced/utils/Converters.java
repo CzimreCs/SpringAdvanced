@@ -3,13 +3,12 @@ package com.gfa.springadvanced.utils;
 import com.gfa.springadvanced.models.*;
 import com.gfa.springadvanced.models.dtos.MovieDTO;
 import com.gfa.springadvanced.models.dtos.MovieForUserDTO;
+import com.gfa.springadvanced.models.dtos.ResultDTO;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Component
 public class Converters {
@@ -26,18 +25,23 @@ public class Converters {
         return modelMapper.map(movieDTO, Movie.class);
     }
 
+    public List<MovieForUserDTO>
+                convertMovieDTOListToMovieForUserDTOList(List<MovieDTO> list, Class<MovieForUserDTO> movieForUserDTO) {
+        return list.stream().map(element-> modelMapper.map(element, movieForUserDTO)).toList();
+    }
+
     public List<MovieForUserDTO> convertMoviesToMoviesForUserDTO(List<Movie> movies) {
         List<MovieForUserDTO> userMovies = new ArrayList<>();
 
         for (Movie movie : movies) {
             MovieForUserDTO userMovie = modelMapper.map(movie, MovieForUserDTO.class);
 
-            userMovie.setGenres(movie.getMovieGenre().stream().map(Genre::getGenre).toList());
+            userMovie.setGenres(movie.getMovieGenre().stream().map(Genre::getName).toList());
 
             userMovie.setProductionCompanies(movie.getProductionCompanies().stream()
                     .map(ProductionCompany::getProductionCompany).toList());
 
-            userMovie.setProductionCompanies(movie.getProductionCountries().stream()
+            userMovie.setProductionCountries(movie.getProductionCountries().stream()
                     .map(ProductionCountry::getProductionCountry).toList());
 
             userMovie.setSpokenLanguages(movie.getSpokenLanguages());
@@ -45,4 +49,18 @@ public class Converters {
         }
         return userMovies;
     }
+
+    public MovieDTO convertResultDTOToMovieDTO(ResultDTO resultDTO){
+        return modelMapper.map(resultDTO, MovieDTO.class);
+    }
+
+    public List<MovieDTO> convertResultListToMovieList(List<ResultDTO> resultDTOs) {
+        List<MovieDTO> movies = new ArrayList<>();
+        for (ResultDTO result : resultDTOs) {
+            movies.add(convertResultDTOToMovieDTO(result));
+        }
+        return movies;
+    }
+
+
 }

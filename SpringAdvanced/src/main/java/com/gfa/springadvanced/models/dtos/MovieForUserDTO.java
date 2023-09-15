@@ -5,6 +5,7 @@ import com.gfa.springadvanced.models.SpokenLanguage;
 import java.util.Date;
 import java.util.List;
 
+
 public class MovieForUserDTO {
 
     private Boolean adult;
@@ -14,12 +15,12 @@ public class MovieForUserDTO {
     private String imdbId;
     private String originalLanguage;
     private String originalTitle;
-    private String overView;
+    private String overview;
     private Double popularity;
     private String posterPath;
     private List<String> productionCompanies;
     private List<String> productionCountries;
-    private Date releaseDate;
+    private String releaseDate;
     private Integer revenue;
     private Integer runtime;
     private List<SpokenLanguage> spokenLanguages;
@@ -89,12 +90,12 @@ public class MovieForUserDTO {
         this.originalTitle = originalTitle;
     }
 
-    public String getOverView() {
-        return overView;
+    public String getOverview() {
+        return overview;
     }
 
-    public void setOverView(String overView) {
-        this.overView = overView;
+    public void setOverview(String overview) {
+        this.overview = overview;
     }
 
     public Double getPopularity() {
@@ -129,11 +130,11 @@ public class MovieForUserDTO {
         this.productionCountries = productionCountries;
     }
 
-    public Date getReleaseDate() {
+    public String getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
 

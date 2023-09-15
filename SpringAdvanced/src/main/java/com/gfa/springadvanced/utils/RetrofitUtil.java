@@ -13,6 +13,16 @@ public class RetrofitUtil {
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
 
+            retrofit = new Retrofit.Builder().baseUrl(RetrofitConstant.BASE_URL)
+
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+        }
+        return retrofit;
+    }
+}
+
 /*            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
             httpClient.addInterceptor(new Interceptor() {
                 @Override
@@ -31,11 +41,3 @@ public class RetrofitUtil {
                     return chain.proceed(request);
                 }
             });*/
-            retrofit = new Retrofit.Builder().baseUrl(RetrofitConstant.BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-        }
-        return retrofit;
-    }
-}

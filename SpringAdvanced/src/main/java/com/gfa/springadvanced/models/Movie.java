@@ -28,6 +28,7 @@ public class Movie {
     private String imdbId;
     private String originalLanguage;
     private String originalTitle;
+    @Column(columnDefinition = "TEXT")
     private String overview;
     private Double popularity;
     private String posterPath;
@@ -40,7 +41,7 @@ public class Movie {
     @JsonIgnore
     private List<ProductionCountry> productionCountries;
 
-    private Date releaseDate;
+    private String releaseDate;
     private Integer revenue;
     private Integer runtime;
 
@@ -60,7 +61,7 @@ public class Movie {
 
     public Movie(Boolean adult, String backdropPath, Boolean belongsToCollection, Integer budget, String homepage, Long movieId, String imdbId,
                  String originalLanguage, String originalTitle, String overview, Double popularity, String posterPath,
-                 Date releaseDate, Integer revenue, Integer runtime, String status, String tagline, String title,
+                 String releaseDate, Integer revenue, Integer runtime, String status, String tagline, String title,
                  Boolean video, Double voteAverage, Integer voteCount) {
         this.adult = adult;
         this.backdropPath = backdropPath;
@@ -213,11 +214,11 @@ public class Movie {
         this.productionCountries = productionCountries;
     }
 
-    public Date getReleaseDate() {
+    public String getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
 

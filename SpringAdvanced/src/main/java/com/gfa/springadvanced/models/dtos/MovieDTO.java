@@ -1,43 +1,59 @@
 package com.gfa.springadvanced.models.dtos;
 
 import com.gfa.springadvanced.models.SpokenLanguage;
+import com.google.gson.annotations.SerializedName;
+import jakarta.persistence.Column;
+import org.w3c.dom.Text;
 
 import java.util.Date;
 import java.util.List;
 
 public class MovieDTO {
     private Boolean adult;
+    @SerializedName("backdrop_path")
     private String backdropPath;
     private Integer budget;
+    @SerializedName("belongs_to_collection")
     private Boolean belongsToCollection;
     private List<String> genres;
     private String homepage;
+    @SerializedName("movie_id")
     private Long movieId;
+    @SerializedName("imdb_id")
     private String imdbId;
+    @SerializedName("original_language")
     private String originalLanguage;
+    @SerializedName("original_title")
     private String originalTitle;
-    private String overView;
+    private String overview;
     private Double popularity;
+    @SerializedName("poster_path")
     private String posterPath;
+    @SerializedName("production_companies")
     private List<String> productionCompanies;
+    @SerializedName("production_countries")
     private List<String> productionCountries;
-    private Date releaseDate;
+    @SerializedName("release_date")
+    private String releaseDate;
     private Integer revenue;
     private Integer runtime;
+    @SerializedName("spoken_languages")
     private List<SpokenLanguage> spokenLanguages;
     private String status;
     private String tagline;
     private String title;
     private Boolean video;
+    @SerializedName("vote_average")
     private Double voteAverage;
+    @SerializedName("vote_count")
     private Integer voteCount;
 
     public MovieDTO() {
     }
 
     public MovieDTO(Boolean adult, String backdropPath, Integer budget, Boolean belongsToCollection, List<String> genres, String homepage, Long movieId,
-                    String imdbId, String originalLanguage, String originalTitle, String overView, Double popularity, String posterPath,
-                    List<String> productionCompanies, List<String> productionCountries, Date releaseDate, Integer revenue, Integer runtime,
+                    String imdbId, String originalLanguage, String originalTitle, String overview, Double popularity, String posterPath,
+                    List<String> productionCompanies, List<String> productionCountries, String releaseDate, Integer revenue, Integer runtime,
                     List<SpokenLanguage> spokenLanguages, String status, String tagline, String title, Boolean video, Double voteAverage, Integer voteCount) {
         this.adult = adult;
         this.backdropPath = backdropPath;
@@ -49,7 +65,7 @@ public class MovieDTO {
         this.imdbId = imdbId;
         this.originalLanguage = originalLanguage;
         this.originalTitle = originalTitle;
-        this.overView = overView;
+        this.overview = overview;
         this.popularity = popularity;
         this.posterPath = posterPath;
         this.productionCompanies = productionCompanies;
@@ -146,12 +162,12 @@ public class MovieDTO {
         this.originalTitle = originalTitle;
     }
 
-    public String getOverView() {
-        return overView;
+    public String getOverview() {
+        return overview;
     }
 
-    public void setOverView(String overView) {
-        this.overView = overView;
+    public void setOverview(String overview) {
+        this.overview = overview;
     }
 
     public Double getPopularity() {
@@ -186,11 +202,11 @@ public class MovieDTO {
         this.productionCountries = productionCountries;
     }
 
-    public Date getReleaseDate() {
+    public String getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
 

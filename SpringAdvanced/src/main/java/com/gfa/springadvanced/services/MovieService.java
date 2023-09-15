@@ -11,4 +11,6 @@ public interface MovieService {
     MovieDTO fetchLatestMovie();
 
     List<MovieForUserDTO> getAllMovies();
+
+    List<MovieForUserDTO> getMoviesByTitle(String title);
 }

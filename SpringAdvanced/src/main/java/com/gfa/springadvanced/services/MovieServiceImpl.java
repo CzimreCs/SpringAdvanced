@@ -1,8 +1,11 @@
 package com.gfa.springadvanced.services;
 
+import com.gfa.springadvanced.constants.RetrofitConstant;
 import com.gfa.springadvanced.models.*;
+import com.gfa.springadvanced.models.dtos.MovieByTitleDTO;
 import com.gfa.springadvanced.models.dtos.MovieDTO;
 import com.gfa.springadvanced.models.dtos.MovieForUserDTO;
+import com.gfa.springadvanced.models.dtos.ResultDTO;
 import com.gfa.springadvanced.repositories.*;
 import com.gfa.springadvanced.utils.Converters;
 import com.gfa.springadvanced.utils.MovieBuilder;
@@ -16,6 +19,7 @@ import retrofit2.Retrofit;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -63,7 +67,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public MovieDTO fetchLatestMovie() {
         MovieDTO latestMovie = new MovieDTO();
-        Call<MovieDTO> latestMovieCall = movieApi.fetchLatestMovie("eaba4dbb76a3b2fed7844f2747b12507");
+        Call<MovieDTO> latestMovieCall = movieApi.fetchLatestMovie(RetrofitConstant.API_KEY);
         try {
             Response<MovieDTO> response = latestMovieCall.execute();
             try {
@@ -91,5 +95,37 @@ public class MovieServiceImpl implements MovieService {
         List<MovieForUserDTO> moviesForUserDTO = converters.convertMoviesToMoviesForUserDTO(movies);
 
         return moviesForUserDTO;
+    }
+
+    @Override
+    public List<MovieForUserDTO> getMoviesByTitle(String title) {
+        Optional<List<Movie>> movies = movieRepository.findAllByTitle(title);
+        MovieByTitleDTO movieList = new MovieByTitleDTO();
+        if (movies.isPresent() && !movies.get().isEmpty()){
+            return converters.convertMoviesToMoviesForUserDTO(movies.get());
+        }
+        Call<MovieByTitleDTO> moviesToSave = movieApi.fetchMovieByTitle(title, RetrofitConstant.API_KEY);
+        try {
+            Response<MovieByTitleDTO> response = moviesToSave.execute();
+            try {
+                if (response.isSuccessful()) {
+                    movieList = response.body();
+                }
+            } catch (NullPointerException ex) {
+                throw new NullPointerException();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            for (ResultDTO movieTemp : movieList.getResults()) {
+                saveMovie(converters.convertResultDTOToMovieDTO(movieTemp));
+            }
+        } catch (NullPointerException e) {
+            throw new NullPointerException();
+        }
+
+        return converters.convertMovieDTOListToMovieForUserDTOList(converters.convertResultListToMovieList(movieList.getResults()), MovieForUserDTO.class);
     }
 }
