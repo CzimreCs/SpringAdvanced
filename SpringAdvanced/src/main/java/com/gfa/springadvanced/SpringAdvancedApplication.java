@@ -1,38 +1,44 @@
 package com.gfa.springadvanced;
 
 import com.gfa.springadvanced.models.Genre;
+import com.gfa.springadvanced.models.Role;
+import com.gfa.springadvanced.models.User;
 import com.gfa.springadvanced.repositories.GenreRepository;
+import com.gfa.springadvanced.repositories.RoleRepository;
+import com.gfa.springadvanced.repositories.UserRepository;
 import com.gfa.springadvanced.services.MovieService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
-public class SpringAdvancedApplication implements CommandLineRunner {
-
-    private final MovieService movieService;
-
-    public SpringAdvancedApplication(GenreRepository genreRepository, MovieService movieService) {
-        this.movieService = movieService;
-    }
+public class SpringAdvancedApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SpringAdvancedApplication.class, args);
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-/*        List<String> genres = Arrays.asList("action", "comedy");
-        List<String> companies = Arrays.asList("Warner", "Pixar");
-        List<String> countries = Arrays.asList("USA", "UK");
-        List<SpokenLanguage> languages = Arrays.asList(new SpokenLanguage("german", "345", "name"),
-                new SpokenLanguage("english", "123iso", "eng"));
-        LocalDate dtm = LocalDate.now();
-        MovieDTO movieDTO = new MovieDTO(true, "backPath", 100, false, genres, "homepage", 200L, "imdbId", "originalLanguage",
-                "originalTitle", "overview", 3.45, "postPath", companies, countries, dtm, 1, 90, languages, "status", "tagline",
-                "title", true, 3.3, 12);
-        movieService.saveMovie(movieDTO);*/
+    @Bean
+    CommandLineRunner run(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+
+        return args -> {
+            if (roleRepository.findByAuthority("ADMIN").isPresent()) {
+                return;
+            }
+            Role adminRole = roleRepository.save(new Role("ADMIN"));
+            roleRepository.save(new Role("USER"));
+            List<Role> roles = new ArrayList<>();
+            roles.add(adminRole);
+            User admin = new User( "admin", passwordEncoder.encode("password"), "csabi@csabi.com", roles);
+            userRepository.save(admin);
+
+
+        };
     }
 }
+

@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface ProductionCountryRepository extends JpaRepository<ProductionCountry, Long> {
-    List<ProductionCountry> findAllByMovieCountryId (Long movieId);
+    List<ProductionCountry> findAllByMovieCountryId(Long movieId);
 }

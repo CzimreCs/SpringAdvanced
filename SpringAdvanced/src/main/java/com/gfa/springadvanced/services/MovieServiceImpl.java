@@ -101,7 +101,7 @@ public class MovieServiceImpl implements MovieService {
     public List<MovieForUserDTO> getMoviesByTitle(String title) {
         Optional<List<Movie>> movies = movieRepository.findAllByTitle(title);
         MovieByTitleDTO movieList = new MovieByTitleDTO();
-        if (movies.isPresent() && !movies.get().isEmpty()){
+        if (movies.isPresent() && !movies.get().isEmpty()) {
             return converters.convertMoviesToMoviesForUserDTO(movies.get());
         }
         Call<MovieByTitleDTO> moviesToSave = movieApi.fetchMovieByTitle(title, RetrofitConstant.API_KEY);

@@ -58,19 +58,19 @@ public class MovieServiceListUtils {
         return genres;
     }
 
-    List<Genre> getGenresByMovieId (Long id){
+    List<Genre> getGenresByMovieId(Long id) {
         return genreRepository.findAllByMovieGenreId(id);
     }
 
-    List<ProductionCompany> getProductionCompaniesByMovieId (Long id) {
+    List<ProductionCompany> getProductionCompaniesByMovieId(Long id) {
         return productionCompanyRepository.findAllByMovieCompanyId(id);
     }
 
-    List<ProductionCountry> getProductionCountriesByMovieId (Long id) {
+    List<ProductionCountry> getProductionCountriesByMovieId(Long id) {
         return productionCountryRepository.findAllByMovieCountryId(id);
     }
 
-    List<SpokenLanguage> getSpokenLanguagesByMovieId(Long id){
+    List<SpokenLanguage> getSpokenLanguagesByMovieId(Long id) {
         return spokenLanguageRepository.findAllByMovieLanguageId(id);
     }
 

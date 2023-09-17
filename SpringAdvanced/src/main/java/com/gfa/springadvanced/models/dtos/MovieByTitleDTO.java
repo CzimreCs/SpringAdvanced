@@ -13,7 +13,6 @@ public class MovieByTitleDTO {
     private Integer totalPages;
 
 
-
     public MovieByTitleDTO() {
     }
 

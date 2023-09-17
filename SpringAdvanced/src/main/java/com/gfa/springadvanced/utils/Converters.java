@@ -26,8 +26,8 @@ public class Converters {
     }
 
     public List<MovieForUserDTO>
-                convertMovieDTOListToMovieForUserDTOList(List<MovieDTO> list, Class<MovieForUserDTO> movieForUserDTO) {
-        return list.stream().map(element-> modelMapper.map(element, movieForUserDTO)).toList();
+    convertMovieDTOListToMovieForUserDTOList(List<MovieDTO> list, Class<MovieForUserDTO> movieForUserDTO) {
+        return list.stream().map(element -> modelMapper.map(element, movieForUserDTO)).toList();
     }
 
     public List<MovieForUserDTO> convertMoviesToMoviesForUserDTO(List<Movie> movies) {
@@ -50,7 +50,7 @@ public class Converters {
         return userMovies;
     }
 
-    public MovieDTO convertResultDTOToMovieDTO(ResultDTO resultDTO){
+    public MovieDTO convertResultDTOToMovieDTO(ResultDTO resultDTO) {
         return modelMapper.map(resultDTO, MovieDTO.class);
     }
 
